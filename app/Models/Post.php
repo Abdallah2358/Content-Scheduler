@@ -124,6 +124,6 @@ class Post extends Model
      */
     public function platforms(): BelongsToMany
     {
-        return $this->belongsToMany(Platform::class, 'post_platforms', 'post_id', 'platform_id');
+        return $this->belongsToMany(Platform::class, 'post_platform', 'post_id', 'platform_id');
     }
 }

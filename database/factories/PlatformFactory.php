@@ -17,7 +17,15 @@ class PlatformFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'name' => $this->faker->company,
+            'type' => $this->faker->randomElement([
+                0, // Twitter
+                1, // Instagram
+                2, // LinkedIn
+                3, // Facebook
+            ]),
+             'created_at' => now(),
+            'updated_at' => now(),
         ];
     }
 }

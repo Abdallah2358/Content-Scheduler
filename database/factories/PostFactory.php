@@ -20,6 +20,7 @@ class PostFactory extends Factory
         return [
             'title' => $this->faker->sentence,
             'content' => $this->faker->paragraph,
+            'scheduled_at' => $this->faker->dateTimeBetween('now', '+1 month'),
             'user_id' => User::factory(), // Create a user for the post
         ];
     }

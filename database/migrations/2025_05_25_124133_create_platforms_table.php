@@ -1,6 +1,7 @@
 <?php
 
 use App\Enums\PlatformTypeEnum;
+use App\Models\Platform;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -20,6 +21,24 @@ return new class extends Migration
                 ->default(PlatformTypeEnum::TWITTER);
             $table->timestamps();
         });
+
+        // create default platforms
+        Platform::factory()->create([
+            'name' => 'Twitter',
+            'type' => PlatformTypeEnum::TWITTER,
+        ]);
+        Platform::factory()->create([
+            'name' => 'Instagram',
+            'type' => PlatformTypeEnum::INSTAGRAM,
+        ]);
+        Platform::factory()->create([
+            'name' => 'LinkedIn',
+            'type' => PlatformTypeEnum::LINKEDIN,
+        ]);
+        Platform::factory()->create([
+            'name' => 'Facebook',
+            'type' => PlatformTypeEnum::FACEBOOK,
+        ]);
     }
 
     /**
