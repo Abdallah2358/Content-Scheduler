@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\PostStatusEnum;
 use App\Models\User;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -19,7 +20,7 @@ return new class extends Migration
             $table->string('image_url')->nullable();
             $table->dateTime('scheduled_at')->nullable();
             // 0: draft, 1: scheduled, 2: published, 3: archived
-            $table->tinyInteger('status')->default(0);
+            $table->tinyInteger('status')->default(PostStatusEnum::DRAFT);
             $table->foreignIdFor(User::class);
             $table->timestamps();
         });
