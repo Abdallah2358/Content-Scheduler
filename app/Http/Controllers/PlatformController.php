@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Platorm;
+use App\Models\Platform;
 use Illuminate\Http\Request;
 
-class PlatormController extends Controller
+class PlatformController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -34,7 +34,7 @@ class PlatormController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Platorm $platorm)
+    public function show(Platform $platform)
     {
         //
     }
@@ -42,7 +42,7 @@ class PlatormController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Platorm $platorm)
+    public function edit(Platform $platform)
     {
         //
     }
@@ -50,7 +50,7 @@ class PlatormController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Platorm $platorm)
+    public function update(Request $request, Platform $platform)
     {
         //
     }
@@ -58,7 +58,7 @@ class PlatormController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Platorm $platorm)
+    public function destroy(Platform $platform)
     {
         //
     }

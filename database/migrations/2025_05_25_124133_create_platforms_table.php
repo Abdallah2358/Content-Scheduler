@@ -12,7 +12,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('platorms', function (Blueprint $table) {
+        Schema::create('platforms', function (Blueprint $table) {
             $table->id();
             $table->string('name');
             // 0: Twitter, 1: Instagram, 2: LinkedIn, 3: Facebook 
@@ -27,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('platorms');
+        Schema::dropIfExists('platforms');
     }
 };
