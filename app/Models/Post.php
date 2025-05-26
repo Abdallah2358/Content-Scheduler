@@ -93,7 +93,7 @@ class Post extends Model
         'title',
         'content',
         'status',
-        'published_at',
+        'scheduled_at',
         'user_id',
     ];
     /**
@@ -103,7 +103,7 @@ class Post extends Model
      */
     protected $casts = [
         'status' => PostStatusEnum::class,
-        'published_at' => 'datetime',
+        'scheduled_at' => 'datetime',
         'created_at' => 'datetime',
     ];
 
