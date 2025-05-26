@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StorePostRequest;
+use App\Http\Requests\UpdatePostRequest;
 use App\Models\Post;
 use Illuminate\Http\Request;
 use Spatie\QueryBuilder\QueryBuilder;
@@ -132,9 +133,6 @@ class PostApiController extends Controller
         if (!auth()->check()) {
             return response()->json(['message' => 'Unauthorized'], 401);
         }
-
-        // Create a new post with the validated data
-        /** @var Post $post */
         $post = auth()->user()->posts()->create($request->validated());
         $post->platforms()->attach($request->input('platform_id'));
         $post->load('platforms');
@@ -177,9 +175,27 @@ class PostApiController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Post $post)
+    public function update(UpdatePostRequest $request, Post $post)
     {
-        //
+        // Check if the user is authenticated
+        if (!auth()->check()) {
+            return response()->json(['message' => 'Unauthorized'], 401);
+        }
+
+        // Check if the user has permission to update the post
+        if (!auth()->user()->can('update', $post)) {
+            return response()->json(['message' => 'Unauthorized'], 403);
+        }
+
+        // Update the post with validated data
+        $post->update($request->validated());
+
+        // Update platforms if provided
+        if ($request->has('platforms')) {
+            $post->platforms()->sync($request->input('platforms'));
+        }
+
+        return response()->json($post->load('platforms'), 200);
     }
 
     /**
