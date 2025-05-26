@@ -27,9 +27,15 @@ class StorePostRequest extends FormRequest
             'title' => 'required|string|max:255',
             'content' => 'required|string',
             'image_url' => 'nullable|url',
-            'scheduled_at' => 'nullable|date',
             'status' => ['required', Rule::enum(PostStatusEnum::class)],
-            'platform_id' => 'required_if:scheduled_at|integer|exists:platforms,id',
+            'scheduled_at' => [
+                Rule::requiredIf(
+                    fn() =>
+                    $this->input('status') === PostStatusEnum::SCHEDULED
+                ),
+                'date'
+            ],
+            'platform_id' => 'required_with:scheduled_at|integer|exists:platforms,id',
         ];
     }
 }
