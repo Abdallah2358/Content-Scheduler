@@ -29,6 +29,7 @@ class StorePostRequest extends FormRequest
             'image_url' => 'nullable|url',
             'scheduled_at' => 'nullable|date',
             'status' => ['required', Rule::enum(PostStatusEnum::class)],
+            'platform_id' => 'required_if:scheduled_at|integer|exists:platforms,id',
         ];
     }
 }
