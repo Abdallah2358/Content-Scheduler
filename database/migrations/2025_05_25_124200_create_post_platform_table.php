@@ -15,8 +15,11 @@ return new class extends Migration
     {
         Schema::create('post_platform', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(Post::class);
-            $table->foreignIdFor(Platform::class);
+            $table->foreignIdFor(Post::class)
+                ->constrained('posts');
+            $table->foreignIdFor(Platform::class)
+                ->constrained('platforms');
+            $table->unique(['post_id', 'platform_id'], 'post_platform_unique');
             $table->timestamps();
         });
     }

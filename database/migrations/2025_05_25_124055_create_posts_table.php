@@ -21,7 +21,8 @@ return new class extends Migration
             $table->dateTime('scheduled_at')->nullable();
             // 0: draft, 1: scheduled, 2: published, 3: archived
             $table->tinyInteger('status')->default(PostStatusEnum::DRAFT);
-            $table->foreignIdFor(User::class);
+            $table->foreignIdFor(User::class)
+                ->constrained('users');
             $table->timestamps();
         });
     }
