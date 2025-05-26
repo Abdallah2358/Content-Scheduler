@@ -35,7 +35,19 @@ class StorePostRequest extends FormRequest
                 ),
                 'date'
             ],
-            'platform_id' => 'required_with:scheduled_at|integer|exists:platforms,id',
+            'platforms' => [
+                'array',
+                Rule::requiredIf(
+                    fn() =>
+                    $this->input('status') === PostStatusEnum::SCHEDULED
+                ),
+                'distinct',
+                'min:1',
+            ],
+            'platforms.*' => [
+                'integer',
+                'exists:platforms,id',
+            ],
         ];
     }
 }
