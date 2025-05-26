@@ -1,7 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\AuthApiController;
-use App\Http\Controllers\PostController;
+use App\Http\Controllers\Api\PostApiController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -17,10 +17,10 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     });
     Route::resource(
         'posts',
-        PostController::class
+        PostApiController::class
     );
     Route::get(
         '/posts/{post}/platforms',
-        [PostController::class, 'platforms']
+        [PostApiController::class, 'platforms']
     );
 });
