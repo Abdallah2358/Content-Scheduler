@@ -57,9 +57,21 @@ class PostApiController extends Controller
      *     )
      * )
      */
+
     public function index()
     {
-        return Post::with('platforms')->paginate();
+        // Check if the user is authenticated
+        if (!auth()->check()) {
+            return response()->json(['message' => 'Unauthorized'], 401);
+        }
+
+        $user = auth()->user();
+        // Check if the user has permission to view all posts
+        if (auth()->user()->can('viewAny', Post::class)) {
+            return Post::paginate()->withQueryString()->toJson();
+        }
+        // If the user can only view their own posts, filter by user ID
+        return $user->posts()->paginate()->withQueryString()->toJson();
     }
 
     /**
@@ -94,6 +106,12 @@ class PostApiController extends Controller
      */
     public function show(Post $post)
     {
+        if (!$post) {
+            return response()->json(['message' => 'Post not found'], 404);
+        }
+        if (!auth()->user()->can('view', $post)) {
+            return response()->json(['message' => 'Unauthorized'], 401);
+        }
         return $post->load('platforms');
     }
 
