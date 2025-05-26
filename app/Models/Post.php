@@ -92,9 +92,9 @@ class Post extends Model
     protected $fillable = [
         'title',
         'content',
+        'image_url',
         'status',
         'scheduled_at',
-        'user_id',
     ];
     /**
      * The attributes that should be cast.
