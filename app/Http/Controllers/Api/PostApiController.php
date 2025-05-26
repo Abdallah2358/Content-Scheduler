@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\Post;
 use Illuminate\Http\Request;
+use Spatie\QueryBuilder\QueryBuilder;
 
 /**
  * @OA\Info(
@@ -27,6 +28,8 @@ use Illuminate\Http\Request;
  */
 class PostApiController extends Controller
 {
+    private $allowed_filters = ['status', 'scheduled_at'];
+
     /**
      * @OA\Get(
      *     path="/api/posts",
@@ -68,10 +71,16 @@ class PostApiController extends Controller
         $user = auth()->user();
         // Check if the user has permission to view all posts
         if (auth()->user()->can('viewAny', Post::class)) {
-            return Post::paginate()->withQueryString()->toJson();
+            return QueryBuilder::for(Post::class)
+                ->allowedFilters($this->allowed_filters)
+                ->paginate()
+                ->withQueryString()
+                ->toJson();
         }
         // If the user can only view their own posts, filter by user ID
-        return $user->posts()->paginate()->withQueryString()->toJson();
+        return QueryBuilder::for($user->posts())
+            ->allowedFilters($this->allowed_filters)
+            ->paginate()->withQueryString()->toJson();
     }
 
     /**
