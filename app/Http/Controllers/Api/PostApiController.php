@@ -204,5 +204,18 @@ class PostApiController extends Controller
     public function destroy(Post $post)
     {
         //
+        // Check if the user is authenticated
+        if (!auth()->check()) {
+            return response()->json(['message' => 'Unauthorized'], 401);
+        }
+
+        // Check if the user has permission to update the post
+        if (!auth()->user()->can('delete', $post)) {
+            return response()->json(['message' => 'Unauthorized'], 403);
+        }
+        // Delete the post
+        $post->platforms()->detach();
+        $post->delete();
+        return response()->json(['message' => 'Post deleted successfully'], 200);
     }
 }
