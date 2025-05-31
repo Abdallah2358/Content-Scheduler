@@ -28,7 +28,11 @@ class StorePostRequest extends FormRequest
             'title' => 'required|string|max:255',
             'content' => 'required|string',
             'image_url' => 'nullable|url',
-            'status' => ['required', Rule::enum(PostStatusEnum::class)],
+            'status' => ['required',
+             Rule::enum(PostStatusEnum::class)->except(
+                PostStatusEnum::PUBLISHED
+             )
+            ],
             'scheduled_at' => [
                 Rule::requiredIf(
                     fn() =>
