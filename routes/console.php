@@ -8,4 +8,4 @@ Artisan::command('inspire', function () {
 })->purpose('Display an inspiring quote');
 
 Schedule::command('app:publish-posts')
-    ->everyMinute();
+    ->everyTwoMinutes();
