@@ -6,7 +6,21 @@ use App\Enums\PlatformTypeEnum;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use OpenApi\Attributes as OA;
 
+#[
+    OA\Schema(
+        title: 'Platform',
+        description: 'Platform model',
+        properties: [
+            new OA\Property(property: 'id', type: 'integer', format: 'int64'),
+            new OA\Property(property: 'name', type: 'string'),
+            new OA\Property(property: 'type', ref: '#/components/schemas/PlatformTypeEnum'),
+            new OA\Property(property: 'created_at', type: 'string', format: 'date-time'),
+            new OA\Property(property: 'updated_at', type: 'string', format: 'date-time'),
+        ]
+    )
+]
 class Platform extends Model
 {
     /** @use HasFactory<\Database\Factories\PlatformFactory> */
