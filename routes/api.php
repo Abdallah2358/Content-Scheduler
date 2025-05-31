@@ -19,7 +19,14 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::resource(
         'posts',
         PostApiController::class
-    );
+    )->names([
+                'index' => 'posts.api.index',
+                'store' => 'posts.api.store',
+                'update' => 'posts.api.update',
+                'show' => 'posts.api.show',
+                'destroy' => 'posts.api.destroy',
+            ])
+        ->except(['create', 'edit']);
     Route::post(
         'posts/publish',
         [PostApiController::class, 'publish']
