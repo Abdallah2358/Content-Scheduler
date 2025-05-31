@@ -10,3 +10,4 @@
   - Assumptions:
     1. The user has a missing relation with platforms ( Active platforms) which should indicate the platforms that the user Activated ( may mean that the user finished setting up the permissions of posting on his behalf) [ Makes Most Business wise sense for this scenario ]
     2. This will build on the 2nd Assumption of question 1 "May Be the platform allows for also hiding..." allowing the user to choose these status 
+
