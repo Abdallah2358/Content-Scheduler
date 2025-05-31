@@ -7,12 +7,12 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 Route::group(['middleware' => ['guest:sanctum']], function () {
-    Route::post('/login', [AuthApiController::class, 'login']);
-    Route::post('/register', [AuthApiController::class, 'register']);
+    Route::post('login', [AuthApiController::class, 'login']);
+    Route::post('register', [AuthApiController::class, 'register']);
 });
 
 Route::group(['middleware' => ['auth:sanctum']], function () {
-    Route::post('/logout', function (Request $request) {
+    Route::post('logout', function (Request $request) {
         $request->user()->currentAccessToken()->delete();
         return response()->json(['message' => 'Logged out successfully']);
     });
@@ -20,20 +20,24 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
         'posts',
         PostApiController::class
     );
+    Route::post(
+        'posts/publish',
+        [PostApiController::class, 'publish']
+    );
     // Route::resource(
     //     'platforms',
     //     PlatformApiController::class
     // );
     Route::get(
-        '/platforms',
+        'platforms',
         [PlatformApiController::class, 'index']
     )->name('platforms.index');
     Route::get(
-        '/platforms/{platform}/toggle',
+        'platforms/{platform}/toggle',
         [PlatformApiController::class, 'toggle']
     )->name('platforms.toggle');
     Route::get(
-        '/posts/{post}/platforms',
+        'posts/{post}/platforms',
         [PostApiController::class, 'platforms']
     );
 });
