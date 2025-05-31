@@ -39,5 +39,9 @@ class PublishPost implements ShouldQueue
     public function handle(): void
     {
         $this->platform->publish($this->post);
+        $this->post->platforms()->updateExistingPivot(
+            $this->platform->id,
+            ['is_published' => true]
+        );
     }
 }

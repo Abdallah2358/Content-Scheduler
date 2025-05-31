@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use App\Enums\PostStatusEnum;
+use App\Jobs\PublishPost;
 use App\Models\Post;
 use Illuminate\Console\Command;
 
@@ -38,7 +39,8 @@ class PublishPosts extends Command
             $post->status = PostStatusEnum::PUBLISHED;
             $post->save();
             foreach ($post->platforms as $platform) {
-                
+                PublishPost::dispatch($post, $platform);
+                $this->info("Post '{$post->title}' scheduled for publishing on platform: {$platform->name}.");
             }
             $this->info("Post '{$post->title}' published successfully.");
         }
