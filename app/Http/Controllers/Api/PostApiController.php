@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Enums\PostStatusEnum;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StorePostRequest;
 use App\Http\Requests\UpdatePostRequest;
@@ -163,9 +164,6 @@ class PostApiController extends Controller
      */
     public function show(Post $post)
     {
-        if (!$post) {
-            return response()->json(['message' => 'Post not found'], 404);
-        }
         if (!auth()->user()->can('view', $post)) {
             return response()->json(['message' => 'Unauthorized'], 401);
         }
@@ -217,5 +215,24 @@ class PostApiController extends Controller
         $post->platforms()->detach();
         $post->delete();
         return response()->json(['message' => 'Post deleted successfully'], 200);
+    }
+    /**
+     * Publish the post to the specified platforms.
+     */
+    public function publish(Request $request)
+    {
+        $errorMessages = [];
+
+        foreach ($request->input('posts', []) as $post) {
+            $post = Post::findOrFail($post);
+            // Check if the user has permission to publish the post
+            if (!auth()->user()->can('publish', $post)) {
+                $errorMessages[] = "Unauthorized to publish post with ID {$post->id}";
+                continue;
+            }
+
+            # TODO: Implement the logic to publish the post to the specified platforms.
+        }
+        return response()->json(['message' => 'Post published successfully'], 200);
     }
 }

@@ -66,4 +66,14 @@ class PostPolicy
     {
         return false;
     }
+
+    /**
+     * Determine whether the user can publish the post.
+     */
+    public function publish(User $user, Post $post): bool
+    {
+        // The user can publish the post if they own it and it is not already published.
+        return $user->id === $post->user_id && $post->status !== PostStatusEnum::PUBLISHED;
+    }
+    
 }
