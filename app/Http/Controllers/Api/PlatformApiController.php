@@ -50,7 +50,7 @@ class PlatformApiController extends Controller
         return Platform::paginate()->withQueryString();
     }
 
-    public function disable(Request $request, Platform $platform)
+    public function toggle(Request $request, Platform $platform)
     {
         // Check if the user is authenticated
         if (!auth()->check()) {
@@ -58,14 +58,17 @@ class PlatformApiController extends Controller
         }
 
         // Check if the user has permission to disable the platform
-        if (!auth()->user()->can('disable', $platform)) {
+        if (!auth()->user()->can('toggle', $platform)) {
             return response()->json(['message' => 'Forbidden'], 403);
         }
 
-        // Disable the platform
-        // $platform->update(['is_active' => false]);
-        Auth::user()->disabled_platforms()->attach($platform->id);
+        // Toggle the platform's disabled status
+        if (Auth::user()->disabled_platforms()->where('platform_id', $platform->id)->exists()) {
+            Auth::user()->disabled_platforms()->detach($platform->id);
+            return response()->json(['message' => 'Platform enabled successfully'], 200);
+        }
 
+        Auth::user()->disabled_platforms()->attach($platform->id);
         return response()->json(['message' => 'Platform disabled successfully'], 200);
     }
 }

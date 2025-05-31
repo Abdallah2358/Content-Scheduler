@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use App\Enums\PostStatusEnum;
+use Closure;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -47,6 +48,11 @@ class StorePostRequest extends FormRequest
             'platforms.*' => [
                 'integer',
                 'exists:platforms,id',
+                function (string $attribute, mixed $value, Closure $fail) {
+                  if (auth()->user()->disabled_platforms()->where('platform_id', $value)->exists()) {
+                      $fail("You cannot publish to this platform because it is disabled.");
+                  }
+                },
             ],
         ];
     }
