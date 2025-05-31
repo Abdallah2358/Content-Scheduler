@@ -10,16 +10,16 @@ use OpenApi\Attributes as OA;
 
 #[
     OA\Schema(
-        title: 'Platform',
-        description: 'Platform model',
-        properties: [
-            new OA\Property(property: 'id', type: 'integer', format: 'int64'),
-            new OA\Property(property: 'name', type: 'string'),
-            new OA\Property(property: 'type', ref: '#/components/schemas/PlatformTypeEnum'),
-            new OA\Property(property: 'created_at', type: 'string', format: 'date-time'),
-            new OA\Property(property: 'updated_at', type: 'string', format: 'date-time'),
-        ]
-    )
+    title: 'Platform',
+    description: 'Platform model',
+    properties: [
+        new OA\Property(property: 'id', type: 'integer', format: 'int64'),
+        new OA\Property(property: 'name', type: 'string'),
+        new OA\Property(property: 'type', ref: '#/components/schemas/PlatformTypeEnum'),
+        new OA\Property(property: 'created_at', type: 'string', format: 'date-time'),
+        new OA\Property(property: 'updated_at', type: 'string', format: 'date-time'),
+    ]
+)
 ]
 class Platform extends Model
 {
@@ -54,5 +54,15 @@ class Platform extends Model
     public function posts(): BelongsToMany
     {
         return $this->belongsToMany(Post::class, 'post_platform', 'platform_id', 'post_id');
+    }
+
+    public function publish(Post $post): string
+    {   
+        return match ($this->type) {
+            PlatformTypeEnum::TWITTER => (new \App\Services\TwitterPublishService($post))->publish(),
+            PlatformTypeEnum::INSTAGRAM => (new \App\Services\InstagramPublishService($post))->publish(),
+            PlatformTypeEnum::LINKEDIN => (new \App\Services\LinkedInPublishService($post))->publish(),
+            PlatformTypeEnum::FACEBOOK => (new \App\Services\FacebookPublishService($post))->publish(),
+        };
     }
 }
