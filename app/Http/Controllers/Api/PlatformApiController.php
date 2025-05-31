@@ -50,7 +50,39 @@ class PlatformApiController extends Controller
         return Platform::paginate()->withQueryString();
     }
 
-    public function toggle(Request $request, Platform $platform)
+    #[OA\Get(
+        path: "/api/platforms/{platform}/toggle",
+        tags: ["Platforms"],
+        summary: "Toggle platform disabled status",
+        operationId: "togglePlatform",
+        security: [
+            ["sanctumAuth" => []]
+        ],
+        parameters: [
+            new OA\Parameter(
+                name: "platform",
+                in: "path",
+                description: "ID of the platform to toggle",
+                required: true,
+                schema: new OA\Schema(type: "integer")
+            )
+        ],
+        responses: [
+            new OA\Response(
+                response: 200,
+                description: "Platform toggled successfully",
+                content: new OA\JsonContent(
+                    type: "object",
+                    properties: [
+                        new OA\Property(property: "message", type: "string")
+                    ]
+                )
+            ),
+            new OA\Response(response: 401, description: "Unauthorized"),
+            new OA\Response(response: 403, description: "Forbidden")
+        ]   
+    )]
+        public function toggle(Request $request, Platform $platform)
     {
         // Check if the user is authenticated
         if (!auth()->check()) {
