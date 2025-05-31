@@ -20,6 +20,8 @@ return new class extends Migration
             $table->foreignIdFor(Platform::class)
                 ->constrained('platforms');
             $table->unique(['post_id', 'platform_id'], 'post_platform_unique');
+            $table->boolean('is_published')->default(false)
+                ->comment('Indicates if the post has been published on the platform');
             $table->timestamps();
         });
     }
