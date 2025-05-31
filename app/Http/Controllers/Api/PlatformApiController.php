@@ -47,7 +47,7 @@ class PlatformApiController extends Controller
     )]
     public function index()
     {
-        return Platform::paginate()->withQueryString();
+        return Platform::all();
     }
 
     #[OA\Get(
@@ -80,9 +80,9 @@ class PlatformApiController extends Controller
             ),
             new OA\Response(response: 401, description: "Unauthorized"),
             new OA\Response(response: 403, description: "Forbidden")
-        ]   
+        ]
     )]
-        public function toggle(Request $request, Platform $platform)
+    public function toggle(Request $request, Platform $platform)
     {
         // Check if the user is authenticated
         if (!auth()->check()) {
