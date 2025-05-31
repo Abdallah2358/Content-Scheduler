@@ -19,7 +19,6 @@ return new class extends Migration
                 ->constrained('posts');
             $table->foreignIdFor(Platform::class)
                 ->constrained('platforms');
-            $table->string('platform_status')->nullable();
             $table->unique(['post_id', 'platform_id'], 'post_platform_unique');
             $table->timestamps();
         });
