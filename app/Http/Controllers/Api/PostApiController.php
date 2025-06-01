@@ -135,7 +135,7 @@ class PostApiController extends Controller
             return response()->json(['message' => 'Unauthorized'], 401);
         }
         $post = auth()->user()->posts()->create($request->validated());
-        $post->platforms()->attach($request->input('platform_id'));
+        $post->platforms()->attach($request->input('platforms', []));
         $post->load('platforms');
         return response()->json($post, 201);
     }
