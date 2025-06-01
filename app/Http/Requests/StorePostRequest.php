@@ -28,17 +28,19 @@ class StorePostRequest extends FormRequest
             'title' => 'required|string|max:255',
             'content' => 'required|string',
             'image_url' => 'nullable|url',
-            'status' => ['required',
-             Rule::enum(PostStatusEnum::class)->except(
-                PostStatusEnum::PUBLISHED
-             )
+            'status' => [
+                'required',
+                Rule::enum(PostStatusEnum::class)->except(
+                    PostStatusEnum::PUBLISHED
+                )
             ],
             'scheduled_at' => [
                 Rule::requiredIf(
                     fn() =>
                     $this->input('status') === PostStatusEnum::SCHEDULED
                 ),
-                'date'
+                'date',
+                'after_or_equal:now',
             ],
             'platforms' => [
                 'array',
@@ -53,9 +55,9 @@ class StorePostRequest extends FormRequest
                 'integer',
                 'exists:platforms,id',
                 function (string $attribute, mixed $value, Closure $fail) {
-                  if (auth()->user()->disabled_platforms()->where('platform_id', $value)->exists()) {
-                      $fail("You cannot publish to this platform because it is disabled.");
-                  }
+                    if (auth()->user()->disabled_platforms()->where('platform_id', $value)->exists()) {
+                        $fail("You cannot publish to this platform because it is disabled.");
+                    }
                 },
             ],
         ];
