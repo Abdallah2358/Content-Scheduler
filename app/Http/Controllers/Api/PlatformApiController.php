@@ -82,7 +82,7 @@ class PlatformApiController extends Controller
             new OA\Response(response: 403, description: "Forbidden")
         ]
     )]
-    public function toggle(Request $request, Platform $platform)
+    public function toggle( Platform $platform)
     {
         // Check if the user is authenticated
         if (!auth()->check()) {

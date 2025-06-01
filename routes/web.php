@@ -17,4 +17,7 @@ Route::middleware([
     })->name('dashboard');
     Route::resource('posts', PostController::class)
         ->only(['index', 'create', 'edit']);
+    Route::get('user/settings', function () {
+        return view('user.settings');
+    })->name('user.settings');
 });
