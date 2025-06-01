@@ -16,7 +16,7 @@ return new class extends Migration {
             $table->id();
             $table->foreignIdFor(User::class)->constrained('users')
                 ->onDelete('cascade');
-            $table->foreignIdFor(Platform::class)->constrained('users')
+            $table->foreignIdFor(Platform::class)->constrained('platforms')
                 ->onDelete('cascade');
             $table->timestamps();
         });
