@@ -8,9 +8,8 @@
     <div class="py-12 bg-gray-50 min-h-screen">
         <div class="max-w-3xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white shadow-xl sm:rounded-lg p-8">
-                <form @submit.prevent="submitForm" x-data="postForm()"  class="space-y-6">
+                <form @submit.prevent="submitForm" x-data="postForm()" class="space-y-6">
                     @csrf
-
                     <!-- Title -->
                     <div>
                         <label class="block font-medium text-sm text-gray-700" for="title">Title</label>
@@ -19,10 +18,17 @@
                     </div>
 
                     <!-- Content -->
-                    <div>
+                    <div x-data="{ max: 1000 }">
                         <label class="block font-medium text-sm text-gray-700" for="content">Content</label>
-                        <textarea id="content" x-model="form.content" rows="5"
+
+                        <textarea id="content" x-model="form.content"  :maxlength="max" rows="5"
                             class="form-textarea rounded-md shadow-sm mt-1 block w-full" required></textarea>
+
+                        <div class="text-sm mt-1 text-right" :class="form . content . length > max * 0.9 ? 'text-red-500 font-semibold' : 'text-gray-500'">
+                            <span x-text="form.content.length"></span>
+                            / <span x-text="max"></span>
+                            characters
+                        </div>
                     </div>
 
                     <!-- Image URL -->
@@ -61,8 +67,7 @@
 
                     <!-- Submit -->
                     <div>
-                        <button type="submit"
-                            class="bg-blue-600 hover:bg-blue-700 focus:ring-blue-500 focus:ring-offset-blue-200
+                        <button type="submit" class="bg-blue-600 hover:bg-blue-700 focus:ring-blue-500 focus:ring-offset-blue-200
                                    text-white font-semibold px-6 py-2 rounded-md shadow-md
                                    focus:outline-none focus:ring-2 focus:ring-offset-2 transition">
                             Create Post
